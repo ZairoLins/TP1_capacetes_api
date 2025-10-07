@@ -1,0 +1,106 @@
+@startuml
+
+' ===Classes de localização===
+
+class Regiao {
+  -id: Long
+  -nome: String
+}
+
+class Estado {
+  -id: Long
+  -nome: String
+  -sigla: String
+}
+
+class Cidade {
+  -id: Long
+  -nome: String
+}
+
+class Endereco {
+  -id: Long
+  -cep: String
+  -logradouro: String
+  -numero: String
+  -complemento: String
+}
+
+' ===Usuário===
+
+class Usuario {
+  -id: Long
+  -nome: String
+  -cpf: String
+  -email: String
+}
+
+' ===Produtos===
+
+abstract class Produto {
+  -id: Long
+  -preco: BigDecimal
+  -estoque: int
+  -descricao: String
+}
+
+class Capacete {
+  -marca: String
+  -modelo: String
+  -tamanho: String
+}
+
+' === Carrinho ===
+
+class Carrinho {
+  -id: Long
+  -dataCriacao: Date
+  -status: String
+}
+
+class ItemCarrinho {
+  -id: Long
+  -quantidade: int
+}
+
+' === Pedido ===
+
+class Pedido {
+  -id: Long
+  -data: Date
+  -status: String
+}
+
+class ItemPedido {
+  -id: Long
+  -quantidade: int
+  -subtotal: BigDecimal
+}
+
+class Pagamento {
+  -id: Long
+  -valor: BigDecimal
+  -metodo: String
+  -status: String
+}
+
+' === Relações ===
+
+Regiao "1" -- "*" Estado
+Estado "1" -- "*" Cidade
+Cidade "1" -- "*" Endereco
+Usuario "1" -- "*" Endereco
+
+Produto <|-- Capacete
+
+Usuario "1" -- "1" Carrinho
+Carrinho "1" -- "*" ItemCarrinho
+ItemCarrinho "*" -- "1" Capacete
+
+Usuario "1" -- "*" Pedido
+Pedido "1" -- "*" ItemPedido
+ItemPedido "*" -- "1" Capacete
+
+Pedido "1" *-- "1" Pagamento
+
+@enduml
