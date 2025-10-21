@@ -30,18 +30,7 @@ class Endereco {
 
 class Usuario {
   -id: Long
-  -nome: String
   -cpf: String
-  -email: String
-}
-
-' ===Produtos===
-
-abstract class Produto {
-  -id: Long
-  -preco: BigDecimal
-  -estoque: int
-  -descricao: String
 }
 
 class Capacete {
@@ -84,14 +73,55 @@ class Pagamento {
   -status: String
 }
 
+class Cor {
+  -nome: String
+  -hexadecimal: String
+}
+
+enum Tamanho {
+  +CINQUENTA_DOIS:int
+  +CINQUENTA_QUATRO:int
+  +CINQUENTA_SEIS:int
+  +CINQUENTA_OITO:int
+  +SESSENTA:int
+  +SESSENTA_DOIS:int
+}
+
+enum Sexo {
+  +MASCULINO:int
+  +FEMININO:int
+  +UNISEX:int
+}
+
+class Modelo {
+  -nome: String
+}
+
+class Marca {
+  -nome: String 
+}
+
+class Fabricante {
+  -cnpj: String
+  -razaoSocial: String
+}
+
+class Pessoa {
+  -nome: String
+  -email: String
+}
+
+class Telefone {
+  -codigoPais: String
+  -codigoArea: String 
+  -numero: String
+}
+
 ' === Relações ===
 
-Regiao "1" -- "*" Estado
-Estado "1" -- "*" Cidade
-Cidade "1" -- "*" Endereco
-Usuario "1" -- "*" Endereco
-
-Produto <|-- Capacete
+Endereco "*" --> "1" Cidade
+Cidade "*" --> "1" Estado
+Estado "*" --> "1" Regiao
 
 Usuario "1" -- "1" Carrinho
 Carrinho "1" -- "*" ItemCarrinho
@@ -102,5 +132,16 @@ Pedido "1" -- "*" ItemPedido
 ItemPedido "*" -- "1" Capacete
 
 Pedido "1" *-- "1" Pagamento
+Capacete "*" --> "1" Modelo
+Modelo "*" --> "1" Marca
+Capacete "*" --> "*" Cor
+Capacete "*" --> "1" Fabricante
+Capacete "*" --> "1" Tamanho
+Capacete "*" --> "1" Sexo
+
+Fabricante --|> Pessoa
+Usuario --|> Pessoa
+Pessoa "1" *--> "*" Endereco
+Pessoa "1" *--> "*" Telefone
 
 @enduml
